@@ -1,0 +1,37 @@
+<idea-plugin>
+    <id>com.linsage</id>
+    <name>Java Bean to Json</name>
+    <version>1.0</version>
+    <vendor email="linsage@live.com" url="https://github.com/linsage"> linsage</vendor>
+
+    <description><![CDATA[
+       <p>A simple plugin for converting Java bean to JSON</p>
+       <p>When you post json request using Postman :)</p>
+    ]]></description>
+
+    <change-notes><![CDATA[
+         <li>1.0 - First revision.</li>
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="173.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <action id="com.linsage.Java2JsonAction" class="com.linsage.Java2JsonAction" text="ConvertToJson"
+                description="Java Bean Convert to Json">
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </action>
+    </actions>
+
+</idea-plugin>
