@@ -7,3 +7,6 @@ When you post json request using Postman :)
 ## Screenshot
 
 ![](https://raw.githubusercontent.com/linsage/java2json/master/screenshot/java2json.gif)
+
+
+https://plugins.jetbrains.com/plugin/10336-java-bean-to-json
