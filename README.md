@@ -6,4 +6,4 @@ When you post json request using Postman :)
 
 ## Screenshot
 
-![](https://github.com/linsage/java2json/blob/master/screenshot/java2json.gif)
+![](https://raw.githubusercontent.com/linsage/java2json/master/screenshot/java2json.gif)
