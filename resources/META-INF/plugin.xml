@@ -1,9 +1,9 @@
 <idea-plugin>
     <id>com.linsage</id>
     <name>Java Bean to Json</name>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <vendor email="linsage@live.com" url="https://github.com/linsage"> linsage</vendor>
-
+    <depends>com.intellij.modules.lang</depends>
     <description><![CDATA[
        <p>A simple plugin for converting Java bean to JSON</p>
        <p>When you post json request using Postman :)</p>
@@ -11,11 +11,13 @@
 
     <change-notes><![CDATA[
          <li>1.0 - First revision.</li>
+         <li>1.0.1 - update plugin info.</li>
     ]]>
     </change-notes>
 
+    <depends>com.intellij.modules.lang</depends>
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="173.0"/>
+    <idea-version since-build="145.0"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
