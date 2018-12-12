@@ -37,6 +37,7 @@ public class Java2JsonAction extends AnAction {
         normalTypes.put("Double", 0.0D);
         normalTypes.put("String", "");
         normalTypes.put("BigDecimal", 0.0);
+        normalTypes.put("Date", "");
     }
 
     private static boolean isNormalType(String typeName) {
@@ -87,8 +88,6 @@ public class Java2JsonAction extends AnAction {
                     String fieldTypeName = type.getPresentableText();
                     if (isNormalType(fieldTypeName)) {    //normal Type
                         kv.set(name, normalTypes.get(fieldTypeName));
-                    } else if (fieldTypeName.endsWith("Date")) {
-                        kv.set(name, "");
                     } else if (type instanceof PsiArrayType) {   //array type
                         PsiType deepType = type.getDeepComponentType();
                         ArrayList list = new ArrayList<>();
