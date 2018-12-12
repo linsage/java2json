@@ -36,7 +36,7 @@ public class Java2JsonAction extends AnAction {
         normalTypes.put("Float", 0.0F);
         normalTypes.put("Double", 0.0D);
         normalTypes.put("String", "");
-        normalTypes.put("Date", null);
+        normalTypes.put("BigDecimal", 0.0);
     }
 
     private static boolean isNormalType(String typeName) {
@@ -69,17 +69,26 @@ public class Java2JsonAction extends AnAction {
 
     public static KV getFields(PsiClass psiClass) {
         KV kv = KV.create();
+        KV commentKV = KV.create();
 
         if (psiClass != null) {
             for (PsiField field : psiClass.getAllFields()) {
                 PsiType type = field.getType();
                 String name = field.getName();
+
+                //doc comment
+                if (field.getDocComment() != null && field.getDocComment().getText() != null) {
+                    commentKV.set(name, field.getDocComment().getText());
+                }
+
                 if (type instanceof PsiPrimitiveType) {       //primitive Type
                     kv.set(name, PsiTypesUtil.getDefaultValue(type));
                 } else {    //reference Type
                     String fieldTypeName = type.getPresentableText();
                     if (isNormalType(fieldTypeName)) {    //normal Type
                         kv.set(name, normalTypes.get(fieldTypeName));
+                    } else if (fieldTypeName.endsWith("Date")) {
+                        kv.set(name, "");
                     } else if (type instanceof PsiArrayType) {   //array type
                         PsiType deepType = type.getDeepComponentType();
                         ArrayList list = new ArrayList<>();
@@ -104,9 +113,14 @@ public class Java2JsonAction extends AnAction {
                         }
                         kv.set(name, list);
                     } else {    //class type
+                        System.out.println(name + ":" + type);
                         kv.set(name, getFields(PsiUtil.resolveClassInType(type)));
                     }
                 }
+            }
+
+            if (commentKV.size() > 0) {
+                kv.set("@comment", commentKV);
             }
         }
 
