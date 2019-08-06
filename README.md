@@ -17,6 +17,8 @@ https://plugins.jetbrains.com/plugin/10336-java-bean-to-json
     - update plugin info
 - v1.0.2
     - add doc comment
+- v1.0.3
+    - support time class type
 
 ## Support
 

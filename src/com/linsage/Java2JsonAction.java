@@ -15,12 +15,20 @@ import org.jetbrains.annotations.NonNls;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Java2JsonAction extends AnAction {
     private static NotificationGroup notificationGroup;
+    private static String pattern = "yyyy-MM-dd HH:mm:ss";
+    private static DateFormat df = new SimpleDateFormat(pattern);
 
     @NonNls
     private static final Map<String, Object> normalTypes = new HashMap<>();
@@ -37,7 +45,12 @@ public class Java2JsonAction extends AnAction {
         normalTypes.put("Double", 0.0D);
         normalTypes.put("String", "");
         normalTypes.put("BigDecimal", 0.0);
-        normalTypes.put("Date", "");
+        normalTypes.put("Date", df.format(new Date()));
+        normalTypes.put("Timestamp", System.currentTimeMillis());
+        normalTypes.put("LocalDate", LocalDate.now().toString());
+        normalTypes.put("LocalTime", LocalTime.now().toString());
+        normalTypes.put("LocalDateTime", LocalDateTime.now().toString());
+
     }
 
     private static boolean isNormalType(String typeName) {
