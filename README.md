@@ -19,6 +19,8 @@ https://plugins.jetbrains.com/plugin/10336-java-bean-to-json
     - add doc comment
 - v1.0.3
     - support time class type
+- v1.0.4
+    - build IntelliJ IDEA 192.* due to Java functionality
 
 ## Support
 
