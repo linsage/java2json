@@ -21,6 +21,8 @@ https://plugins.jetbrains.com/plugin/10336-java-bean-to-json
     - support time class type
 - v1.0.4
     - build IntelliJ IDEA 192.* due to Java functionality
+- v1.0.5
+    - support enum
 
 ## Support
 

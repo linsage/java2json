@@ -124,8 +124,19 @@ public class Java2JsonAction extends AnAction {
                             list.add(getFields(iterableClass));
                         }
                         kv.set(name, list);
+                    } else if (PsiUtil.resolveClassInClassTypeOnly(type).isEnum()) { //enum
+                        ArrayList namelist = new ArrayList<String>();
+                        PsiField[] fieldList = PsiUtil.resolveClassInClassTypeOnly(type).getFields();
+                        if (fieldList != null) {
+                            for (PsiField f : fieldList) {
+                                if (f instanceof PsiEnumConstant) {
+                                    namelist.add(f.getName());
+                                }
+                            }
+                        }
+                        kv.set(name, namelist);
                     } else {    //class type
-                        System.out.println(name + ":" + type);
+                        //System.out.println(name + ":" + type);
                         kv.set(name, getFields(PsiUtil.resolveClassInType(type)));
                     }
                 }
