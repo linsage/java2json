@@ -23,7 +23,11 @@ https://plugins.jetbrains.com/plugin/10336-java-bean-to-json
     - build IntelliJ IDEA 192.* due to Java functionality
 - v1.0.5
     - support enum
+- v1.0.6
+    - add tools menu
 
 ## Support
+
+[Donate with PayPal](https://www.paypal.me/linsage)
 
 ![](https://note-1256162930.picgz.myqcloud.com/zo1mm.jpg)

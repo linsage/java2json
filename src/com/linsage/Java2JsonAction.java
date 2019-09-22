@@ -29,6 +29,7 @@ public class Java2JsonAction extends AnAction {
     private static NotificationGroup notificationGroup;
     private static String pattern = "yyyy-MM-dd HH:mm:ss";
     private static DateFormat df = new SimpleDateFormat(pattern);
+    public static boolean isShowComment = true;
 
     @NonNls
     private static final Map<String, Object> normalTypes = new HashMap<>();
@@ -142,7 +143,7 @@ public class Java2JsonAction extends AnAction {
                 }
             }
 
-            if (commentKV.size() > 0) {
+            if (isShowComment && commentKV.size() > 0) {
                 kv.set("@comment", commentKV);
             }
         }

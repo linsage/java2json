@@ -1,12 +1,16 @@
 <idea-plugin>
     <id>com.linsage</id>
     <name>Java Bean to Json</name>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <vendor email="linsage@live.com" url="https://github.com/linsage"> linsage</vendor>
     <depends>com.intellij.modules.lang</depends>
     <description><![CDATA[
-       <p>A simple plugin for converting Java bean to JSON</p>
-       <p>When you post json request using Postman :)</p>
+      <a href="https://github.com/linsage/java2json">GitHub</a> |
+      <a href="https://www.paypal.me/linsage">Donate with PayPal</a> |
+      <br/>
+      <br/>
+      <p>A simple plugin for converting Java bean to JSON</p>
+      <p>When you post json request using Postman :)</p>
     ]]></description>
 
     <change-notes><![CDATA[
@@ -16,6 +20,7 @@
          <li>1.0.3 - support time class type.</li>
          <li>1.0.4 - build IntelliJ IDEA 192.* due to Java functionality</li>
          <li>1.0.5 - support enum</li>
+         <li>1.0.6 - add tools menu</li>
     ]]>
     </change-notes>
 
@@ -39,6 +44,12 @@
                 description="Java Bean Convert to Json">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
+
+        <group id="Java2JsonMenu" text="Java2Json" popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <action class="com.linsage.menu.ToggleCommentAction" id="menu_comment" text="Toggle Comment" icon="AllIcons.Actions.Checked"  />
+            <action class="com.linsage.menu.SponsorAction" id="menu_sponsor" text="Sponsor me" />
+        </group>
     </actions>
 
 </idea-plugin>
