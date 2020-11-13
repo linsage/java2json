@@ -1,5 +1,6 @@
 package com.linsage;
 
+import com.google.common.collect.Sets;
 import com.intellij.notification.*;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Java2JsonAction extends AnAction {
     private static NotificationGroup notificationGroup;
@@ -67,7 +69,7 @@ public class Java2JsonAction extends AnAction {
         PsiElement referenceAt = psiFile.findElementAt(editor.getCaretModel().getOffset());
         PsiClass selectedClass = (PsiClass) PsiTreeUtil.getContextOfType(referenceAt, new Class[]{PsiClass.class});
         try {
-            KV kv = getFields(selectedClass);
+            KV kv = getFields(selectedClass, Sets.newHashSet(selectedClass.getName()));
             String json = kv.toPrettyJson();
             StringSelection selection = new StringSelection(json);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -82,7 +84,7 @@ public class Java2JsonAction extends AnAction {
     }
 
 
-    public static KV getFields(PsiClass psiClass) {
+    public static KV getFields(PsiClass psiClass, Set<String> classNames) {
         KV kv = KV.create();
         KV commentKV = KV.create();
 
@@ -111,10 +113,14 @@ public class Java2JsonAction extends AnAction {
                         } else if (isNormalType(deepTypeName)) {
                             list.add(normalTypes.get(deepTypeName));
                         } else {
-                            list.add(getFields(PsiUtil.resolveClassInType(deepType)));
+                            PsiClass deepTypePsiClass = PsiUtil.resolveClassInType(deepType);
+                            if (!classNames.contains(deepTypePsiClass.getName())) {
+                                classNames.add(deepTypePsiClass.getName());
+                                list.add(getFields(deepTypePsiClass, Sets.newHashSet(classNames)));
+                            }
                         }
                         kv.set(name, list);
-                    } else if (fieldTypeName.startsWith("List")) {   //list type
+                    } else if (fieldTypeName.contains("List")) {   //list type
                         PsiType iterableType = PsiUtil.extractIterableTypeParameter(type, false);
                         PsiClass iterableClass = PsiUtil.resolveClassInClassTypeOnly(iterableType);
                         ArrayList list = new ArrayList<>();
@@ -122,12 +128,16 @@ public class Java2JsonAction extends AnAction {
                         if (isNormalType(classTypeName)) {
                             list.add(normalTypes.get(classTypeName));
                         } else {
-                            list.add(getFields(iterableClass));
+                            if (!classNames.contains(iterableClass.getName())) {
+                                classNames.add(iterableClass.getName());
+                                list.add(getFields(iterableClass, Sets.newHashSet(classNames)));
+                            }
                         }
                         kv.set(name, list);
                     } else if (PsiUtil.resolveClassInClassTypeOnly(type).isEnum()) { //enum
                         ArrayList namelist = new ArrayList<String>();
-                        PsiField[] fieldList = PsiUtil.resolveClassInClassTypeOnly(type).getFields();
+                        PsiField[] fieldList =
+                                PsiUtil.resolveClassInClassTypeOnly(type).getFields();
                         if (fieldList != null) {
                             for (PsiField f : fieldList) {
                                 if (f instanceof PsiEnumConstant) {
@@ -138,7 +148,11 @@ public class Java2JsonAction extends AnAction {
                         kv.set(name, namelist);
                     } else {    //class type
                         //System.out.println(name + ":" + type);
-                        kv.set(name, getFields(PsiUtil.resolveClassInType(type)));
+                        PsiClass referencePsiClass = PsiUtil.resolveClassInType(type);
+                        if (!classNames.contains(referencePsiClass.getName())) {
+                            classNames.add(referencePsiClass.getName());
+                            kv.set(name, getFields(referencePsiClass, Sets.newHashSet(classNames)));
+                        }
                     }
                 }
             }
