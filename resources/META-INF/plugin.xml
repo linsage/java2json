@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.linsage</id>
     <name>Java Bean to Json</name>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <vendor email="linsage@live.com" url="https://github.com/linsage"> linsage</vendor>
     <depends>com.intellij.modules.lang</depends>
     <description><![CDATA[
@@ -21,6 +21,7 @@
          <li>1.0.4 - build IntelliJ IDEA 192.* due to Java functionality</li>
          <li>1.0.5 - support enum</li>
          <li>1.0.6 - add tools menu</li>
+         <li>1.0.7 - support @JsonProperty annntation</li>
     ]]>
     </change-notes>
 
