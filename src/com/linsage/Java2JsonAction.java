@@ -122,8 +122,7 @@ public class Java2JsonAction extends AnAction {
                                 list.add(getFields(deepTypePsiClass, Sets.newHashSet(classNames)));
                             }
                         }
-
-                        kv.set(name, list);
+                        kv.set(jsonKey, list);
                     } else if (fieldTypeName.contains("List")) {   //list type
                         PsiType iterableType = PsiUtil.extractIterableTypeParameter(type, false);
                         PsiClass iterableClass = PsiUtil.resolveClassInClassTypeOnly(iterableType);
@@ -152,7 +151,11 @@ public class Java2JsonAction extends AnAction {
                         kv.set(jsonKey, namelist);
                     } else {    //class type
                         //System.out.println(name + ":" + type);
-                        kv.set(jsonKey, getFields(PsiUtil.resolveClassInType(type)));
+                        PsiClass referencePsiClass = PsiUtil.resolveClassInType(type);
+                        if (!classNames.contains(referencePsiClass.getName())) {
+                            classNames.add(referencePsiClass.getName());
+                            kv.set(jsonKey, getFields(referencePsiClass, Sets.newHashSet(classNames)));
+                        }
                     }
                 }
             }
