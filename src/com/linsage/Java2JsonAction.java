@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Set;
 
 public class Java2JsonAction extends AnAction {
@@ -92,18 +94,19 @@ public class Java2JsonAction extends AnAction {
             for (PsiField field : psiClass.getAllFields()) {
                 PsiType type = field.getType();
                 String name = field.getName();
+                String jsonKey = getJsonKeyName(name,field.getText());
 
                 //doc comment
                 if (field.getDocComment() != null && field.getDocComment().getText() != null) {
-                    commentKV.set(name, field.getDocComment().getText());
+                    commentKV.set(jsonKey, field.getDocComment().getText());
                 }
 
                 if (type instanceof PsiPrimitiveType) {       //primitive Type
-                    kv.set(name, PsiTypesUtil.getDefaultValue(type));
+                    kv.set(jsonKey, PsiTypesUtil.getDefaultValue(type));
                 } else {    //reference Type
                     String fieldTypeName = type.getPresentableText();
                     if (isNormalType(fieldTypeName)) {    //normal Type
-                        kv.set(name, normalTypes.get(fieldTypeName));
+                        kv.set(jsonKey, normalTypes.get(fieldTypeName));
                     } else if (type instanceof PsiArrayType) {   //array type
                         PsiType deepType = type.getDeepComponentType();
                         ArrayList list = new ArrayList<>();
@@ -119,6 +122,7 @@ public class Java2JsonAction extends AnAction {
                                 list.add(getFields(deepTypePsiClass, Sets.newHashSet(classNames)));
                             }
                         }
+
                         kv.set(name, list);
                     } else if (fieldTypeName.contains("List")) {   //list type
                         PsiType iterableType = PsiUtil.extractIterableTypeParameter(type, false);
@@ -133,7 +137,7 @@ public class Java2JsonAction extends AnAction {
                                 list.add(getFields(iterableClass, Sets.newHashSet(classNames)));
                             }
                         }
-                        kv.set(name, list);
+                        kv.set(jsonKey, list);
                     } else if (PsiUtil.resolveClassInClassTypeOnly(type).isEnum()) { //enum
                         ArrayList namelist = new ArrayList<String>();
                         PsiField[] fieldList =
@@ -145,14 +149,10 @@ public class Java2JsonAction extends AnAction {
                                 }
                             }
                         }
-                        kv.set(name, namelist);
+                        kv.set(jsonKey, namelist);
                     } else {    //class type
                         //System.out.println(name + ":" + type);
-                        PsiClass referencePsiClass = PsiUtil.resolveClassInType(type);
-                        if (!classNames.contains(referencePsiClass.getName())) {
-                            classNames.add(referencePsiClass.getName());
-                            kv.set(name, getFields(referencePsiClass, Sets.newHashSet(classNames)));
-                        }
+                        kv.set(jsonKey, getFields(PsiUtil.resolveClassInType(type)));
                     }
                 }
             }
@@ -163,5 +163,20 @@ public class Java2JsonAction extends AnAction {
         }
 
         return kv;
+    }
+
+    private static String getJsonKeyName(String name, String text) {
+
+        String jsonKey = name;
+        if (text ==null||text ==""){
+            return jsonKey;
+        }
+        String regPattern = "@JsonProperty\\(\"([\\w\\d_]+)\"\\)";
+        Pattern pattern = Pattern.compile(regPattern);
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find()){
+            jsonKey = matcher.group(1).split(",")[0];
+        }
+        return jsonKey;
     }
 }

@@ -25,6 +25,8 @@ https://plugins.jetbrains.com/plugin/10336-java-bean-to-json
     - support enum
 - v1.0.6
     - add tools menu
+- v1.0.7
+  - support @JsonProperty annotation
 
 ## Support
 
