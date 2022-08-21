@@ -5,10 +5,10 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.linsage.Java2JsonAction;
 
-public class ToggleCommentAction extends AnAction {
+public class ToggleUnderLineAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
-        Java2JsonAction.isShowComment = !Java2JsonAction.isShowComment;
-        e.getPresentation().setIcon(Java2JsonAction.isShowComment ? AllIcons.Actions.Checked : AllIcons.Actions.Cancel);
+        Java2JsonAction.isUnderlineModel = !Java2JsonAction.isUnderlineModel;
+        e.getPresentation().setIcon(Java2JsonAction.isUnderlineModel ? AllIcons.Actions.Checked : AllIcons.Actions.Cancel);
     }
 }
