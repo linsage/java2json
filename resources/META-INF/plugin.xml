@@ -50,6 +50,9 @@
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <action class="com.linsage.menu.ToggleCommentAction" id="menu_comment" text="Toggle Comment" icon="AllIcons.Actions.Checked"  />
             <action class="com.linsage.menu.SponsorAction" id="menu_sponsor" text="Sponsor me" />
+            <action class="com.linsage.menu.ToggleUnderLineAction" id="menu_underline" text="Toggle UnderLine"
+                    icon="AllIcons.Actions.Cancel"
+            />
         </group>
     </actions>
 

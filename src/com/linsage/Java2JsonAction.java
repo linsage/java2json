@@ -34,7 +34,10 @@ public class Java2JsonAction extends AnAction {
     private static String pattern = "yyyy-MM-dd HH:mm:ss";
     private static DateFormat df = new SimpleDateFormat(pattern);
     public static boolean isShowComment = true;
-
+    /**
+     * 下划线模式  不用驼峰
+     */
+    public static boolean isUnderlineModel = false;
     @NonNls
     private static final Map<String, Object> normalTypes = new HashMap<>();
 
@@ -180,6 +183,26 @@ public class Java2JsonAction extends AnAction {
         if (matcher.find()){
             jsonKey = matcher.group(1).split(",")[0];
         }
+        //驼峰转下划线
+        if (isUnderlineModel) {
+            jsonKey = underline(jsonKey);
+        }
         return jsonKey;
+    }
+    private static String underline(String name) {
+        StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < name.length(); ++i) {
+            char ch = name.charAt(i);
+            if (ch >= 'A' && ch <= 'Z') {
+                char ch_ucase = (char) (ch + 32);
+                if (i > 0) {
+                    buf.append('_');
+                }
+                buf.append(ch_ucase);
+            } else {
+                buf.append(ch);
+            }
+        }
+        return buf.toString();
     }
 }
