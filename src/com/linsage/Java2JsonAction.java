@@ -171,7 +171,7 @@ public class Java2JsonAction extends AnAction {
     private static String getJsonKeyName(String name, String text) {
 
         String jsonKey = name;
-        if (text ==null||text ==""){
+        if (text ==null||"".equals(text)){
             return jsonKey;
         }
         String regPattern = "@JsonProperty\\(\"([\\w\\d_]+)\"\\)";
